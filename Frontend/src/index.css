@@ -1,0 +1,4 @@
+/* The element that actually scrolls */
+.scrollable {
+    scrollbar-width: thin;
+}
