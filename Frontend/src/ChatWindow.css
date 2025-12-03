@@ -95,9 +95,11 @@ input:focus {
     justify-content: center;
 }
 
+#submit i{
+    opacity: 0.8;
+}
 #submit i:hover {
-    color: #fff;
-
+    opacity: 1;
 }
 
 .info {
@@ -119,6 +121,13 @@ input:focus {
     text-align: left;
     z-index: 1000;
     box-shadow: 8px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user{
+    text-align: center;
+    font-size: larger;
+    padding: 0;
+    margin: 4px 0;
 }
 
 .dropDownItem {

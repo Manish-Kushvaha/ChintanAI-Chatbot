@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import './ChatWindow.css';
 import Chat from './Chat.jsx';
 import { MyContext } from './MyContext.jsx';
@@ -6,22 +6,25 @@ import { ScaleLoader } from 'react-spinners';
 import axios from 'axios';
 
 export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated }) {
-  const { 
-    prompt, setPrompt, 
-    reply, setReply, 
-    currThreadId, setCurrThreadId, 
-    prevChats, setPrevChats, 
-    setNewChat, newChat 
+  const {
+    prompt, setPrompt,
+    reply, setReply,
+    currThreadId, setCurrThreadId,
+    prevChats, setPrevChats,
+    setNewChat, newChat
   } = useContext(MyContext);
 
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const menuRef = useRef(null);
+  const username = localStorage.getItem("username");
 
   // Logout function
   const handleLogout = async () => {
     try {
       await axios.post("http://localhost:8080/api/auth/logout", {}, { withCredentials: true });
       setIsAuthenticated(false);
+      localStorage.removeItem("username");
     } catch (err) {
       console.log("Logout failed", err);
     }
@@ -35,8 +38,8 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated })
     try {
       const response = await axios.post(
         "http://localhost:8080/api/chat",
-        { message: prompt, threadId: currThreadId }, 
-        { withCredentials: true } 
+        { message: prompt, threadId: currThreadId },
+        { withCredentials: true }
       );
 
       const res = response.data;
@@ -65,12 +68,27 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated })
       { role: "assistant", content: reply }
     ]);
 
-    setPrompt(""); 
+    setPrompt("");
   }, [reply]);
 
+
+
+  // changes
   const handleProfileClick = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(prev => !prev);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <div className='chatWindow'>
@@ -82,18 +100,22 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated })
           </button>
         </div>
 
-        <div className="userIconDiv">
-          <span className='userIcon' onClick={handleProfileClick}><i className="fa-solid fa-user"></i></span>
+        <div ref={menuRef}>
+          <div className="userIconDiv" ref={menuRef}>
+            <span className='userIcon' onClick={handleProfileClick}><i className="fa-solid fa-user"></i></span>
+          </div>
+
+
+          {isOpen &&
+            <div className="dropDown">
+              <p className="user">{username}</p>
+              <div className="dropDownItem"><i className="fa-solid fa-gear"></i>Settings</div>
+              <div className="dropDownItem"><i className="fa-solid fa-cloud-arrow-up"></i>Upgrade plan</div>
+              <div className="dropDownItem" onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i>Log out</div>
+            </div>
+          }
         </div>
       </div>
-
-      {isOpen &&
-        <div className="dropDown">
-          <div className="dropDownItem"><i className="fa-solid fa-gear"></i>Settings</div>
-          <div className="dropDownItem"><i className="fa-solid fa-cloud-arrow-up"></i>Upgrade plan</div>
-          <div className="dropDownItem" onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i>Log out</div>
-        </div>
-      }
 
       <Chat />
       <ScaleLoader color={darkMode ? "#fff" : "black"} className='loader' loading={loading} />

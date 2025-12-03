@@ -15,6 +15,7 @@ export default function Login({ setIsAuthenticated }) {
                 { username, password },
                 { withCredentials: true }
             );
+            localStorage.setItem("username", username);
             console.log(res.data);
             setIsAuthenticated(true);
         } catch (err) {

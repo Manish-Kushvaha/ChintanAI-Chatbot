@@ -23,10 +23,17 @@ function App() {
   const [newChat, setNewChat] = useState(true);
   const [allThreads, setAllThreads] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  // Load saved theme from localStorage OR default to false
+  const [darkMode, setDarkMode] = useState(() => JSON.parse(localStorage.getItem("darkMode")) || false);
 
-  const toggleMode = () =>
-    setDarkMode(!darkMode);
+
+  // Save theme to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    document.body.classList.toggle("dark", darkMode);
+  }, [darkMode]);
+
+  const toggleMode = () => setDarkMode(prev => !prev);
 
   const provideValues = {
     prompt, setPrompt,

@@ -191,12 +191,17 @@ color: #ececec;
 }
 
 .app-container.light .history li.highlighted {
-  background-color: rgb(183, 171, 171);
+  background-color: #E5E5E5;
+}
+.app-container.light .history li:hover {
+  background-color: #E5E7EB;
 }
 .app-container.dark .history li.highlighted {
-  background-color: rgb(153, 152, 152);
-  background-color: rgb(94, 85, 85);
-  
+  background-color: #2b2b2bd8;
+}
+.app-container.dark .history li:hover {
+  background-color:#2D2D2D ;
+
 }
 .app-container.dark .history li{
   margin-top: 0.5rem;
