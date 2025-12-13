@@ -8,6 +8,7 @@
     align-items: center;
     text-align: center;
     margin-left: 2rem;
+    margin-top: 0;
 }
 
 
@@ -19,7 +20,7 @@
     justify-content: space-between;
     align-items: center;
     position: sticky;
-    top: 0.4px;
+    top: 0;
     margin-left: 1.5rem;
     margin-top: 0;
     padding-top: 0;
@@ -95,9 +96,10 @@ input:focus {
     justify-content: center;
 }
 
-#submit i{
+#submit i {
     opacity: 0.8;
 }
+
 #submit i:hover {
     opacity: 1;
 }
@@ -123,7 +125,7 @@ input:focus {
     box-shadow: 8px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.user{
+.user {
     text-align: center;
     font-size: larger;
     padding: 0;

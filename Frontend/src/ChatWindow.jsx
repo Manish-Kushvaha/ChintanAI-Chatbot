@@ -5,18 +5,20 @@ import { MyContext } from './MyContext.jsx';
 import { ScaleLoader } from 'react-spinners';
 import axios from 'axios';
 
-export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated }) {
+export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, setUsername }) {
   const {
     prompt, setPrompt,
     reply, setReply,
     currThreadId, setCurrThreadId,
     prevChats, setPrevChats,
-    setNewChat, newChat
+    setNewChat, newChat,
+    setAllThreads
   } = useContext(MyContext);
 
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
+  const chatWindowRef = useRef(null);
   const username = localStorage.getItem("username");
 
   // Logout function
@@ -25,30 +27,89 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated })
       await axios.post("http://localhost:8080/api/auth/logout", {}, { withCredentials: true });
       setIsAuthenticated(false);
       localStorage.removeItem("username");
+      localStorage.removeItem(`activeThreadId_${username}`);
+      setUsername("");
+
+      // Clear chat state
+      setPrevChats([]);
+      setCurrThreadId(null);
+      setAllThreads([]);
+      setNewChat(true);
+      setPrompt("");
+      setReply(null);
     } catch (err) {
       console.log("Logout failed", err);
     }
   };
 
   const getReply = async () => {
-    if (!prompt.trim()) return;
+    const currentPrompt = prompt;
+    if (!currentPrompt.trim()) return;
+
+    setPrompt(""); // Clear input immediately
     setLoading(true);
     setNewChat(false);
 
     try {
       const response = await axios.post(
         "http://localhost:8080/api/chat",
-        { message: prompt, threadId: currThreadId },
+        { message: currentPrompt, threadId: currThreadId },
         { withCredentials: true }
       );
 
       const res = response.data;
       setReply(res.reply);
 
+
+
       if (res.threadId && res.threadId !== currThreadId) {
         setCurrThreadId(res.threadId);
-        setPrevChats([]);
+        // setPrevChats([]); // Wait, if we switch thread, we probably shouldn't append to prevChats of OLD thread?
+        // But the backend response implies we are now on this thread.
+        // If it's a new thread, prevChats should be just this first exchange?
+        // The original code did: setPrevChats([]); setNewChat(true);
+        // But then the useEffect would run and append the message?
+        // If I append here, I should handle the new thread case.
+
+        // Let's look at original logic:
+        // if (res.threadId && res.threadId !== currThreadId) {
+        //   setCurrThreadId(res.threadId);
+        //   setPrevChats([]); 
+        //   setNewChat(true);
+        // }
+        // AND THEN useEffect would run and append?
+        // If setPrevChats([]) runs, then useEffect appends, we get [user, assistant]. Correct.
+
+        // So if new thread:
+        // setPrevChats([{ role: "user", content: currentPrompt }, { role: "assistant", content: res.reply }]);
+        // setNewChat(true);
+      }
+
+      // Actually, let's stick to the logic:
+      // If new thread, we want to reset prevChats to just this new conversation?
+      // Or does setPrevChats([]) clear it, and then we add?
+
+      // Let's refine the replacement:
+
+      if (res.threadId && res.threadId !== currThreadId) {
+        setCurrThreadId(res.threadId);
+        setPrevChats([
+          { role: "user", content: currentPrompt },
+          { role: "assistant", content: res.reply }
+        ]);
         setNewChat(true);
+
+        // Update sidebar history
+        setAllThreads(prev => [
+          ...prev,
+          { threadId: res.threadId, title: currentPrompt }
+        ]);
+      } else {
+        setPrevChats(prev => [
+          ...prev,
+          { role: "user", content: currentPrompt },
+          { role: "assistant", content: res.reply }
+        ]);
       }
 
     } catch (err) {
@@ -58,18 +119,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated })
     setLoading(false);
   };
 
-  // Append new chats to prevChats
-  useEffect(() => {
-    if (!reply) return;
 
-    setPrevChats(prev => [
-      ...prev,
-      { role: "user", content: prompt },
-      { role: "assistant", content: reply }
-    ]);
-
-    setPrompt("");
-  }, [reply]);
 
 
 
@@ -90,8 +140,15 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated })
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  // Auto-scroll to bottom
+  useEffect(() => {
+    if (chatWindowRef.current) {
+      chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
+    }
+  }, [prevChats, loading]);
+
   return (
-    <div className='chatWindow'>
+    <div className='chatWindow' ref={chatWindowRef}>
       <div className="navbar">
         <div className="mode">
           <span>ChintanAI<i className="fa-solid fa-chevron-down"></i></span>

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from 'axios';
 
-export default function Login({ setIsAuthenticated }) {
-    const [username, setUsername] = useState("");
+export default function Login({ setIsAuthenticated, setUsername }) {
+    const [inputUsername, setInputUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
@@ -12,11 +12,12 @@ export default function Login({ setIsAuthenticated }) {
         try {
             const res = await axios.post(
                 "http://localhost:8080/api/auth/login",
-                { username, password },
+                { username: inputUsername, password },
                 { withCredentials: true }
             );
-            localStorage.setItem("username", username);
+            localStorage.setItem("username", inputUsername);
             console.log(res.data);
+            setUsername(inputUsername);
             setIsAuthenticated(true);
         } catch (err) {
             setError("Invalid username or password");
@@ -31,8 +32,8 @@ export default function Login({ setIsAuthenticated }) {
                 <input
                     type="text"
                     placeholder="Enter Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={inputUsername}
+                    onChange={(e) => setInputUsername(e.target.value)}
                     required
                 />
                 <input

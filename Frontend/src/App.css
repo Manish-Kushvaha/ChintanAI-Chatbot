@@ -98,7 +98,7 @@ h1 {
 }
 
 .app-container.light .userMsg {
-  color: #fff;
+  color: #fff; 
 }
 
 .app-container.dark {
@@ -150,16 +150,14 @@ color: #ececec;
 }
 
 .app-container.dark .navbar{
-      background-color: #212121;
+  background-color: #212121;
 }
 .app-container.dark .chatWindow{
-      background-color: #212121;
+  background-color: #212121;
 }
 .app-container.light .navbar{
-      background-color: #fff;
-}
-.app-container.light .navbar{
-      background-color: #fff;
+  background-color: #fff;
+  color: #ececec;
 }
 
 .app-container.dark .ch h1{
