@@ -16,7 +16,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
     setAllThreads
   } = useContext(MyContext);
 
-  const API_BASE = import.meta.env.VITE_BACKEND_URL;
+  const API_BASE = import.meta.env.VITE_API_BASE_URL;
   
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);

@@ -9,7 +9,7 @@ import Register from './components/Register.jsx';
 import axios from 'axios';
 import { ScaleLoader } from 'react-spinners';
 
-const API_BASE = import.meta.env.VITE_BACKEND_URL;
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 function App() {
 

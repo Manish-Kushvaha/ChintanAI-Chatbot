@@ -6,7 +6,7 @@ export default function Login({ setIsAuthenticated, setUsername }) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
-    const API_BASE = import.meta.env.VITE_BACKEND_URL;
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -21,6 +21,7 @@ export default function Login({ setIsAuthenticated, setUsername }) {
             console.log(res.data);
             setUsername(inputUsername);
             setIsAuthenticated(true);
+            console.log("API BASE:", import.meta.env.VITE_API_BASE_URL);
         } catch (err) {
             setError("Invalid username or password");
             console.error(err);

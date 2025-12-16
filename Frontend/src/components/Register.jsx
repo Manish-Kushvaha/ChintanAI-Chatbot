@@ -7,7 +7,7 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
-    const API_BASE = import.meta.env.BACKEND_URL;
+    const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 
     const handleRegister = async (e) => {

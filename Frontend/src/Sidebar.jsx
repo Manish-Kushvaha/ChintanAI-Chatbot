@@ -2,7 +2,8 @@ import React, { useContext, useEffect } from 'react';
 import './Sidebar.css';
 import { MyContext } from './MyContext.jsx';
 import { v1 as uuid1 } from 'uuid';
-const API_BASE = import.meta.env.VITE_BACKEND_URL;
+import blacklogo from "../assets/blacklogo.png";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
@@ -113,7 +114,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             <div className="button">
               <img
                 className="logo btn"
-                src="src/assets/blacklogo.png"
+                src={blacklogo}
                 alt="gpt logo"
                 onClick={creatNewChat}
               />
