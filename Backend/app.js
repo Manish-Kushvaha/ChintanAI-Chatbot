@@ -10,7 +10,7 @@ import 'dotenv/config';
 import authRoutes from './routes/authRoutes.js'
 
 const app = express();
-
+app.set("trust proxy", 1);
 
 // Session config
 const sessionOptions = {
@@ -18,14 +18,16 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
   cookie: {
+    httpOnly: true,
+    secure: true,          // REQUIRED for HTTPS
+    sameSite: "none",      // REQUIRED for cross-domain
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
   }
 };
 
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
 

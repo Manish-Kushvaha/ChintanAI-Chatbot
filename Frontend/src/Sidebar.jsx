@@ -2,13 +2,15 @@ import React, { useContext, useEffect } from 'react';
 import './Sidebar.css';
 import { MyContext } from './MyContext.jsx';
 import { v1 as uuid1 } from 'uuid';
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
   const { allThreads, setAllThreads, currThreadId, setNewChat, setPrompt, setReply, setCurrThreadId, setPrevChats } = useContext(MyContext);
 
   const getAllThreads = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/thread", {
+      const response = await fetch(`${API_BASE}/api/thread`, {
         method: "GET",
         credentials: "include", //send session cookies
       });
@@ -52,7 +54,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     setCurrThreadId(newThreadId);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${newThreadId}`, {
+      const response = await fetch(`${API_BASE}/api/thread/${newThreadId}`, {
         method: "GET",
         credentials: "include", // session cookie
       });
@@ -75,7 +77,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
   const deleteThread = async (threadId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/thread/${threadId}`, {
+      const response = await fetch(`${API_BASE}/api/thread/${threadId}`, {
         method: "DELETE",
         credentials: "include",
       });

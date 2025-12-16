@@ -9,7 +9,7 @@ import Register from './components/Register.jsx';
 import axios from 'axios';
 import { ScaleLoader } from 'react-spinners';
 
-
+const API_BASE = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
 
@@ -109,7 +109,7 @@ function App() {
       // But on refresh, prevChats is empty, so we fetch.
       if (prevChats.length === 0) {
         try {
-          const res = await axios.get(`http://localhost:8080/api/thread/${currThreadId}`, { withCredentials: true });
+          const res = await axios.get(`${API_BASE}/api/thread/${currThreadId}`, { withCredentials: true });
           setPrevChats(res.data);
           setNewChat(false);
         } catch (err) {
@@ -136,7 +136,7 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/auth/check", { withCredentials: true });
+        const res = await axios.get(`${API_BASE}/api/auth/check`, { withCredentials: true });
         setIsAuthenticated(res.data.loggedIn);
         if (res.data.loggedIn && res.data.user) {
           setUsername(res.data.user.username);

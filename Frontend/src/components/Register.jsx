@@ -7,12 +7,15 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
+    const API_BASE = import.meta.env.BACKEND_URL;
+
+
     const handleRegister = async (e) => {
         e.preventDefault();
 
         try {
             const res = await axios.post(
-                "http://localhost:8080/api/auth/register",
+                `${API_BASE}/api/auth/register`,
                 { username, email, password },
                 { withCredentials: true }
             );

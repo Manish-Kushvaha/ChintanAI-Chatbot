@@ -5,6 +5,7 @@ import { MyContext } from './MyContext.jsx';
 import { ScaleLoader } from 'react-spinners';
 import axios from 'axios';
 
+
 export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, setUsername }) {
   const {
     prompt, setPrompt,
@@ -15,6 +16,8 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
     setAllThreads
   } = useContext(MyContext);
 
+  const API_BASE = import.meta.env.VITE_BACKEND_URL;
+  
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
@@ -24,7 +27,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
   // Logout function
   const handleLogout = async () => {
     try {
-      await axios.post("http://localhost:8080/api/auth/logout", {}, { withCredentials: true });
+      await axios.post(`${API_BASE}/api/auth/logout`, {}, { withCredentials: true });
       setIsAuthenticated(false);
       localStorage.removeItem("username");
       localStorage.removeItem(`activeThreadId_${username}`);
@@ -52,7 +55,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
 
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/chat",
+        `${API_BASE}/api/chat`,
         { message: currentPrompt, threadId: currThreadId },
         { withCredentials: true }
       );

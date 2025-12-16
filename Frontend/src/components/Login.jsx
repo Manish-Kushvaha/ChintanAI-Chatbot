@@ -6,12 +6,14 @@ export default function Login({ setIsAuthenticated, setUsername }) {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    const API_BASE = import.meta.env.VITE_BACKEND_URL;
+
     const handleLogin = async (e) => {
         e.preventDefault();
 
         try {
             const res = await axios.post(
-                "http://localhost:8080/api/auth/login",
+                `${API_BASE}/api/auth/login`,
                 { username: inputUsername, password },
                 { withCredentials: true }
             );
