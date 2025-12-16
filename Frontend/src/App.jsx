@@ -8,7 +8,7 @@ import Login from './components/Login.jsx';
 import Register from './components/Register.jsx';
 import axios from 'axios';
 import { ScaleLoader } from 'react-spinners';
-import api from "../api/axios.js";
+import api from "./api/axios.js";
 
 // const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
