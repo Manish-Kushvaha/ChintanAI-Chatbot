@@ -1,5 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
+import api from "../api/axios.js";
+
 
 export default function Register() {
     const [username, setUsername] = useState("");
@@ -14,7 +16,7 @@ export default function Register() {
         e.preventDefault();
 
         try {
-            const res = await axios.post(
+            const res = await api.post(
                 `${API_BASE}/api/auth/register`,
                 { username, email, password },
                 { withCredentials: true }

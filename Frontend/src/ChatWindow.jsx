@@ -4,6 +4,8 @@ import Chat from './Chat.jsx';
 import { MyContext } from './MyContext.jsx';
 import { ScaleLoader } from 'react-spinners';
 import axios from 'axios';
+import api from "../api/axios.js";
+
 
 
 export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, setUsername }) {
@@ -27,7 +29,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
   // Logout function
   const handleLogout = async () => {
     try {
-      await axios.post(`${API_BASE}/api/auth/logout`, {}, { withCredentials: true });
+      await api.post(`${API_BASE}/api/auth/logout`, {}, { withCredentials: true });
       setIsAuthenticated(false);
       localStorage.removeItem("username");
       localStorage.removeItem(`activeThreadId_${username}`);
@@ -54,7 +56,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
     setNewChat(false);
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         `${API_BASE}/api/chat`,
         { message: currentPrompt, threadId: currThreadId },
         { withCredentials: true }

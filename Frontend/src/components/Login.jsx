@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
+import api from "../api/axios.js";
 
 export default function Login({ setIsAuthenticated, setUsername }) {
     const [inputUsername, setInputUsername] = useState("");
@@ -12,7 +13,7 @@ export default function Login({ setIsAuthenticated, setUsername }) {
         e.preventDefault();
 
         try {
-            const res = await axios.post(
+            const res = await api.post(
                 `${API_BASE}/api/auth/login`,
                 { username: inputUsername, password },
                 { withCredentials: true }
