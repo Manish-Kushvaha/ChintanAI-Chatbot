@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from 'axios';
-import api from "../api/axios.js";
+import api from "./api/axios.js";
 
 export default function Login({ setIsAuthenticated, setUsername }) {
     const [inputUsername, setInputUsername] = useState("");

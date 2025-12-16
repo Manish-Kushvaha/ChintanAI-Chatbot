@@ -4,7 +4,7 @@ import Chat from './Chat.jsx';
 import { MyContext } from './MyContext.jsx';
 import { ScaleLoader } from 'react-spinners';
 import axios from 'axios';
-import api from "../api/axios.js";
+import api from "./api/axios.js";
 
 
 

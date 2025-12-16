@@ -4,6 +4,8 @@ import { MyContext } from './MyContext.jsx';
 import { v1 as uuid1 } from 'uuid';
 import blacklogo from "./assets/blacklogo.png";
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
+// import api from "./api/axios.js";
+
 
 
 export default function Sidebar({ isOpen, toggleSidebar }) {
