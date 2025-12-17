@@ -14,7 +14,7 @@ export default function Login({ setIsAuthenticated, setUsername }) {
 
         try {
             const res = await api.post(
-                `${API_BASE}/api/auth/login`,
+                "/api/auth/login",
                 { username: inputUsername, password },
                 { withCredentials: true }
             );

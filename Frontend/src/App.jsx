@@ -110,7 +110,7 @@ function App() {
       // But on refresh, prevChats is empty, so we fetch.
       if (prevChats.length === 0) {
         try {
-          const res = await api.get(`${API_BASE}/api/thread/${currThreadId}`, { withCredentials: true });
+          const res = await api.get(`/api/thread/${currThreadId}`, { withCredentials: true });
           setPrevChats(res.data);
           setNewChat(false);
         } catch (err) {
@@ -137,7 +137,7 @@ function App() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await api.get(`${API_BASE}/api/auth/check`, { withCredentials: true });
+        const res = await api.get("/api/auth/check", { withCredentials: true });
         setIsAuthenticated(res.data.loggedIn);
         if (res.data.loggedIn && res.data.user) {
           setUsername(res.data.user.username);

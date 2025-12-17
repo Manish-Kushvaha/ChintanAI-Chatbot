@@ -17,7 +17,7 @@ export default function Register() {
 
         try {
             const res = await api.post(
-                `${API_BASE}/api/auth/register`,
+                "/api/auth/register",
                 { username, email, password },
                 { withCredentials: true }
             );

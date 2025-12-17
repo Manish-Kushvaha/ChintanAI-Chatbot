@@ -29,7 +29,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
   // Logout function
   const handleLogout = async () => {
     try {
-      await api.post(`${API_BASE}/api/auth/logout`, {}, { withCredentials: true });
+      await api.post("/api/auth/logout", {}, { withCredentials: true });
       setIsAuthenticated(false);
       localStorage.removeItem("username");
       localStorage.removeItem(`activeThreadId_${username}`);
@@ -57,7 +57,7 @@ export default function ChatWindow({ toggleMode, darkMode, setIsAuthenticated, s
 
     try {
       const response = await api.post(
-        `${API_BASE}/api/chat`,
+        "/api/chat",
         { message: currentPrompt, threadId: currThreadId },
         { withCredentials: true }
       );
